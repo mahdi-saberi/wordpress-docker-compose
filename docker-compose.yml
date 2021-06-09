@@ -19,10 +19,10 @@ services:
       - phpmyadmin
     restart: always
     ports:
-        - 8001:80
+        - 8002:80
 
   mysql:
-    image: mariadb:${MARIADB_VERSION:-latest}
+    image: dockerhub.ir/mariadb:${MARIADB_VERSION:-latest}
     container_name: ${COMPOSE_PROJECT_NAME}_mysql
     volumes:
       - ./mysql:/var/lib/mysql
@@ -36,7 +36,7 @@ services:
   phpmyadmin:
     depends_on:
       - mysql
-    image: phpmyadmin/phpmyadmin:${PHPMYADMIN_VERSION:-latest}
+    image: dockerhub.ir/phpmyadmin/phpmyadmin:${PHPMYADMIN_VERSION:-latest}
     container_name: ${COMPOSE_PROJECT_NAME}_phpmyadmin
     restart: always
     ports:
@@ -48,7 +48,7 @@ services:
   # Command line interface to wordpress
   wpcli:
     build: ./wpcli/
-    image: wpcli
+    image: dockerhub.ir/wpcli
     container_name: ${COMPOSE_PROJECT_NAME}_wpcli
     volumes:
       - ${WORDPRESS_DATA_DIR:-./wordpress}:/var/www/html
@@ -56,7 +56,7 @@ services:
 
 # Check availability of essential services
   healthcheck:
-    image: wpcli
+    image: dockerhub.ir/wpcli
     build: ./wpcli/
     container_name: ${COMPOSE_PROJECT_NAME}_healthcheck
     command: sh -c "/wait"
